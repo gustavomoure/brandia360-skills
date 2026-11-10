@@ -1,0 +1,14 @@
+{
+  "name": "brandia360",
+  "version": "1.0.0",
+  "description": "Skills de Brandia 360 en español para crear el contenido mensual de un negocio: perfil de marca, SEO, nicho, ganchos y guiones, calendario de 30 historias y videos verticales.",
+  "author": {
+    "name": "Brandia 360",
+    "email": "soporte@brandia360.com",
+    "url": "https://brandia360.com"
+  },
+  "homepage": "https://brandia360.com",
+  "repository": "https://github.com/gustavomoure/brandia360-skills",
+  "license": "MIT",
+  "keywords": ["marketing", "redes sociales", "instagram", "historias", "seo", "contenido", "español"]
+}
