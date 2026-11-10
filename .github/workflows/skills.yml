@@ -1,0 +1,62 @@
+name: Validar skills y publicar release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validar frontmatter de cada SKILL.md y manifiestos del plugin
+        run: python3 scripts/validate_skills.py
+
+      - name: Comprobar sintaxis de los scripts Python
+        run: python3 -m py_compile skills/*/scripts/*.py scripts/*.py
+
+      - name: Generar zips
+        run: ./scripts/build-zips.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: brandia360-skills-zips
+          path: dist/*.zip
+
+  release:
+    needs: validar
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generar zips
+        run: ./scripts/build-zips.sh
+
+      - name: Publicar release (versión de plugin.json o tag)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG="v$(python3 -c 'import json;print(json.load(open(".claude-plugin/plugin.json"))["version"])')"
+          fi
+          NOTAS="Skills de Brandia 360 ${TAG}. Descarga el .zip de la skill que quieras y súbelo en claude.ai → Configuración → Capacidades → Skills. En Claude Code: /plugin marketplace add ${GITHUB_REPOSITORY}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "La release $TAG ya existe: se actualizan los zips."
+            gh release upload "$TAG" dist/*.zip --clobber
+          else
+            gh release create "$TAG" dist/*.zip --title "Brandia 360 Skills $TAG" --notes "$NOTAS" --target "$GITHUB_SHA"
+          fi

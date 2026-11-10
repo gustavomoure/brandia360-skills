@@ -1,0 +1,18 @@
+{
+  "name": "brandia360-skills",
+  "description": "Skills gratis de Brandia 360 para crear el contenido mensual de tu negocio: perfil de marca, SEO, nicho, ganchos, calendario e historias en video.",
+  "owner": {
+    "name": "Brandia 360",
+    "email": "soporte@brandia360.com"
+  },
+  "plugins": [
+    {
+      "name": "brandia360",
+      "source": "./",
+      "description": "Hazlo tú mismo: lee tu web, audita tu SEO, investiga tu nicho, escribe ganchos, arma el calendario de 30 historias y genera los videos verticales.",
+      "version": "1.0.0",
+      "category": "marketing",
+      "keywords": ["marketing", "redes sociales", "instagram", "historias", "seo", "contenido", "español"]
+    }
+  ]
+}
