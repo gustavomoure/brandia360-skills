@@ -127,7 +127,7 @@ real del sitio, propone **15 palabras clave** en español (o el idioma del sitio
 
 ## Oportunidades de contenido
 
-## Próximos pasos (checklist de 30 días)
+## Próximos pasos (checklist de 7 días)
 ~~~
 
 Reglas para los textos listos para pegar:
